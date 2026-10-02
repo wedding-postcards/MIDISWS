@@ -1,0 +1,51 @@
+@font-face { font-family: 'Cormorant Garamond'; src: url('/assets/fonts/cormorant-garamond-cyrillic-500-normal.woff2') format('woff2'); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Cormorant Garamond'; src: url('/assets/fonts/CormorantGaramond-Bold.ttf') format('truetype'); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Great Vibes'; src: url('/assets/fonts/GreatVibes-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+* { box-sizing: border-box; }
+html { background: #17110c; scrollbar-width: thin; scrollbar-color: #9c8250 #211b11; }
+body { margin: 0; min-width: 320px; overflow-x: clip; }
+.scene-viewport { position: fixed; inset: 0; z-index: 0; }
+.scene-viewport canvas { display: block; width: 100%; height: 100%; }
+main { position: relative; z-index: 1; pointer-events: none; }
+.hero { min-height: 160svh; color: #f7f1df; --hero-gutter: clamp(24px, 6.25vw, 140px); }
+/* A full-width brand moves up through the centre. The second, quieter scene
+   remains below the viewport until the wordmark has had its own scroll beat. */
+.hero-opening { position: relative; min-height: 100svh; display: grid; place-items: center; padding: 0 2vw; }
+.hero-wordmark { margin: 0; font: 700 25.5vw/.78 'Cormorant Garamond', Georgia, serif; letter-spacing: -.055em; text-align: center; white-space: nowrap; }
+.hero-wordmark { color: #d6b36c; }
+.has-gold-wordmark .hero-wordmark { color: transparent; }
+.hero-caption { position: absolute; left: var(--wordmark-left, 5.2vw); top: calc(50% + 6.5vw + 18px); margin: 0; font: 500 1.8vw/1.2 'Cormorant Garamond', Georgia, serif; letter-spacing: .08em; color: #e7c578; white-space: nowrap; }
+.scroll-cue { position: absolute; left: 50%; bottom: 22px; width: 28px; height: 44px; transform: translateX(-50%); color: #ecdcad; opacity: var(--scroll-cue-opacity, .85); }
+.scroll-cue svg { display: block; width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; }
+.scroll-cue-wheel { animation: scroll-cue-wheel 1.8s cubic-bezier(.4,0,.2,1) infinite; }
+@keyframes scroll-cue-wheel { 0%, 18% { transform: translateY(0); opacity: 0; } 32% { opacity: 1; } 80%, 100% { transform: translateY(7px); opacity: 0; } }
+@media (hover: none), (prefers-reduced-motion: reduce) { .scroll-cue { display: none; } }
+.hero-story { padding: 55svh var(--hero-gutter) 0; }
+.hero-story-title { margin: 0 0 28px; font: 500 clamp(54px, 5.8vw, 112px)/1.12 'Cormorant Garamond', Georgia, serif; letter-spacing: -.03em; }
+.hero-story-title em { font-style: normal; color: #e8c677; }
+.hero-story-title em span { display: inline-block; margin-right: -.045em; font: 400 1.22em/1.12 'Great Vibes', cursive; letter-spacing: 0; }
+.hero-narrative { max-width: min(74vw, 1240px); margin: 0; font: 500 clamp(24px, 2vw, 36px)/1.24 'Cormorant Garamond', Georgia, serif; letter-spacing: -.012em; text-wrap: pretty; color: #f0e7d4; }
+.hero-narrative strong { font-weight: 700; color: #f1d596; }
+.hero-story-title, .hero-narrative { text-shadow: 0 1px 3px rgb(18 12 6 / .8), 0 2px 16px rgb(18 12 6 / .35); }
+.hero-media-placeholder { width: clamp(280px, 25.4vw, 450px); max-width: 100%; margin-top: 28px; aspect-ratio: 16 / 9; background: #c4c0aa; }
+@media (max-width: 760px) {
+  .hero { --hero-gutter: 24px; }
+  .hero-story-title { font-size: clamp(38px, 7vw, 60px); margin-bottom: 22px; }
+  .hero-narrative { max-width: 100%; font-size: clamp(27px, 4.6vw, 34px); }
+}
+.second-screen { height: 100vh; }
+.chapter-index { position: fixed; right: 20px; top: 43%; transform: translateY(-50%); z-index: 16; display: flex; flex-direction: column; align-items: center; color: #f7f7ee; transition: color .28s ease; }
+.chapter-index a { width: 44px; min-height: 44px; display: grid; place-items: center; color: inherit; text-decoration: none; font: 500 16px/1 'Cormorant Garamond', Georgia, serif; opacity: .45; transition: opacity .22s ease; }
+.chapter-index a[aria-current], .chapter-index a:hover, .chapter-index a:focus-visible { opacity: 1; }
+.chapter-index a:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+.chapter-track { position: relative; width: 1px; height: 68px; margin: 5px 0; background: currentColor; opacity: .6; }
+.chapter-track i { position: absolute; top: 0; left: -1px; width: 3px; height: 18px; background: currentColor; transform: translateY(var(--chapter-progress, 0px)); }
+.on-paper .chapter-index { color: #292919; }
+@media (max-width: 1050px) { .chapter-index { right: 7px; } }
+@media (max-width: 760px) { .chapter-index { display: none; } }
+.film-grain { position: fixed; inset: 0; z-index: 25; pointer-events: none; opacity: .065; background: url('/assets/heymessage/grain.png') repeat; background-size: 153.5px 153.5px; }
+.coin-is-grabbed, .coin-is-grabbed * { cursor: grabbing !important; }
+.webgl-failed canvas { display: none; }
+.webgl-failed .scene-viewport { background: #201b12 url('/assets/art/perseus-grip-clean-2026-10-02.png') right 35% / auto 135% no-repeat; }
+.webgl-failed .second-screen { background: #e0d8b5; }
+@media (prefers-reduced-motion: reduce) { html { background: #e0d8b5; } .chapter-index, .chapter-index a { transition: none; } }

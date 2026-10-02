@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import ts from 'typescript';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+const dir=resolve('qa/review-07');await mkdir(dir,{recursive:true});
+const file=resolve(dir,'grab-engine.mjs');
+await writeFile(file,ts.transpileModule(await readFile('src/abundance-physics.ts','utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText);
+const {AbundancePhysics}=await import(pathToFileURL(file).href);await AbundancePhysics.initialize();
+const p=new AbundancePhysics(JSON.parse(await readFile('src/physics/abundance-surface-v3.json','utf8')),true);p.warmup(6);
+for(let i=0;i<12;i++)p.update(1/45,true);
+const index=p.pieces.findIndex(coin=>coin.state===2);assert.ok(index>=0);
+const start={...p.pieces[index].fall.position};
+assert.equal(p.beginGrab({index,state:2,...start}),true);
+p.moveGrab({x:start.x+.3,y:start.y+.3,z:start.z});
+for(let i=0;i<12;i++)p.update(1/45,true);
+const end={...p.pieces[index].fall.position};
+assert.ok(end.y>start.y+.2,'Falling coin must be held against gravity');
+assert.equal(p.stats.grabbed,index);
+p.update(1/45,false);assert.equal(p.stats.grabbed,-1,'Leaving hero cancels held coin');
+assert.equal(p.stats.releases,1);p.world.free();
+// A slow solver must not stretch the four-second opening accent.
+const clock=new AbundancePhysics([]);clock.update(1/45,true,1);const peak=clock.stats.feedRate;
+clock.update(1/45,true,4.01);const steady=clock.stats.feedRate;
+assert.equal(peak,70);assert.equal(steady,20);clock.world.free();
+const result={fallingGrab:true,heldAgainstGravity:end.y-start.y,pauseReleases:true,presentationClock:{peak,steady,cutoffSeconds:4}};
+await writeFile(resolve(dir,'grab-lifecycle.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result));

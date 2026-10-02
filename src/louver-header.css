@@ -1,0 +1,32 @@
+/* Louver: two independent floating controls, with the source's measured
+   spacing, fill, rounding, hover filter and magnetic pointer response. */
+.louver-controls { position: fixed; top: 0; left: 0; right: 0; z-index: 18; height: 88px; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.louver-button { flex: none; display: flex; border: 0; border-radius: 40px; background: #dcd0b1; color: #0d0d0b; text-decoration: none; cursor: pointer; pointer-events: auto; -webkit-tap-highlight-color: transparent; transition: filter 300ms cubic-bezier(.22,1,.36,1), translate 450ms cubic-bezier(.22,1,.36,1) !important; }
+.louver-button:hover { filter: brightness(.86); }
+.louver-button:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.brand-lockup { display: flex; align-items: center; gap: 13px; }
+.louver-brand { align-items: center; gap: 13px; padding: 9px 18px 10px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 500; line-height: 26px; letter-spacing: .11em; text-transform: uppercase; }
+.louver-actions { display: flex; align-items: center; gap: 10px; }
+.louver-booking { align-items: center; gap: 8px; padding: 11px 16px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 13px; font-weight: 700; line-height: 1.3; letter-spacing: .045em; text-transform: uppercase; }
+.louver-booking i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: #c79827; box-shadow: 0 0 8px #d4a22e80; }
+.louver-menu { align-items: center; justify-content: center; padding: 11px 16px; font: 700 13px/1.3 'Cormorant Garamond', Georgia, serif; letter-spacing: .045em; text-transform: uppercase; }
+/* Larian main menu: translateY(-100%) -> 0, .5s ease. The empty surface
+   uses the second-screen shader's sRGB gold and the existing film grain. */
+.site-menu { position: fixed; inset: 0 0 auto; width: 100%; height: min(580px, 100dvh); max-width: none; max-height: none; margin: 0; padding: 0; border: 0; overflow: hidden; background: #dcd0b1; color: #292919; transform: translateY(-100%); transition: transform .5s ease; }
+.site-menu.is-open { transform: translateY(0); }
+.site-menu::before { content: ''; position: absolute; inset: 0; opacity: .065; pointer-events: none; background: url('/assets/heymessage/grain.png') repeat; background-size: 153.5px 153.5px; }
+.site-menu::backdrop { background: rgb(18 18 18 / .65); opacity: 0; transition: opacity .3s ease; }
+.site-menu.is-open::backdrop { opacity: 1; }
+.site-menu-close { position: absolute; top: 24.6px; right: 20px; }
+html.menu-open { overflow: hidden; }
+@media (min-width: 1440px) { .louver-controls { padding-inline: 24px; } }
+@media (min-width: 1440px) { .site-menu-close { right: 24px; } }
+@media (max-width: 1024px) { .site-menu { height: 100dvh; } }
+@media (max-width: 809px) { .louver-controls { height: 72px; padding-inline: 16px; } .louver-brand { font-size: 22px; line-height: 22px; } .louver-booking, .louver-menu { min-height: 44px; padding-inline: 12px; font-size: 10px; } .site-menu-close { top: 14px; right: 16px; } }
+@media (max-width: 480px) { .louver-controls { padding-inline: 12px; } .louver-brand { padding-inline: 10px; font-size: 18px; letter-spacing: .04em; } .louver-actions { gap: 6px; } .louver-booking, .louver-menu { padding-inline: 10px; font-size: 9px; gap: 6px; white-space: nowrap; } .site-menu-close { right: 12px; } }
+@media (max-width: 600px) { .louver-booking, .louver-menu { padding-inline: 9px; font-size: 10px; } }
+@media (max-width: 380px) { .louver-controls { padding-inline: 10px; } .louver-actions { gap: 5px; } .louver-booking, .louver-menu { padding-inline: 8px; font-size: 10px; } }
+@media (prefers-reduced-motion: reduce) { .site-menu, .site-menu::backdrop { transition: none; } }
+/* Share the measured edges of the gold inscription at every viewport width. */
+.louver-controls { padding-left: var(--wordmark-left, 5.2vw); padding-right: var(--wordmark-right, 5.2vw); }
+.site-menu-close { right: var(--wordmark-right, 5.2vw); }
