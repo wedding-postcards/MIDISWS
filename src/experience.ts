@@ -1,8 +1,10 @@
 import './style.css';
 import Lenis from 'lenis';
 import { SceneExperience } from './scene';
+import type { HeroUiFrame } from './header-interactions';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const heroPreview = document.body.dataset.heroPreview === 'game';
 const lenis = new Lenis({
   duration: 1.05,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -26,16 +28,25 @@ function measureChapters(): void {
   wordmarkBounds = { top: titleRect.top + scrollY, left: titleRect.left, width: titleRect.width, height: titleRect.height };
   document.documentElement.style.setProperty('--wordmark-left', `${titleRect.left}px`);
   document.documentElement.style.setProperty('--wordmark-right', `${document.documentElement.clientWidth - titleRect.right}px`);
+  if (heroPreview) {
+    const firstLetter = document.createRange();
+    firstLetter.selectNodeContents(wordmark);
+    firstLetter.setEnd(wordmark.firstChild!, 1);
+    const firstRect = firstLetter.getBoundingClientRect();
+    document.documentElement.style.setProperty('--wordmark-first-center', `${firstRect.left + firstRect.width / 2}px`);
+  }
   // Fit the small inscription to the first two large letters without
   // stretching the glyphs or inserting oversized spaces between words.
-  const prefix = document.createRange();
-  prefix.selectNodeContents(wordmark);
-  prefix.setEnd(wordmark.firstChild!, 2);
-  const captionWidth = prefix.getBoundingClientRect().width;
-  const captionText = caption.textContent!.trim();
-  typeMeasure.font = '500 100px "Cormorant Garamond"';
-  const captionUnits = typeMeasure.measureText(captionText).width / 100 + captionText.length * .08;
-  caption.style.fontSize = `${captionWidth / captionUnits * .86}px`;
+  if (!heroPreview) {
+    const prefix = document.createRange();
+    prefix.selectNodeContents(wordmark);
+    prefix.setEnd(wordmark.firstChild!, 2);
+    const captionWidth = prefix.getBoundingClientRect().width;
+    const captionText = caption.textContent!.trim();
+    typeMeasure.font = '500 100px "Cormorant Garamond"';
+    const captionUnits = typeMeasure.measureText(captionText).width / 100 + captionText.length * .08;
+    caption.style.fontSize = `${captionWidth / captionUnits * .86}px`;
+  }
   const narrativeBottom = narrative.getBoundingClientRect().bottom + scrollY;
   const storyBottom = story.getBoundingClientRect().bottom + scrollY;
   const start = Math.max(innerHeight * .65, narrativeBottom - innerHeight * .58);
@@ -52,6 +63,15 @@ document.addEventListener('midis:menu-change', event => {
 });
 let lastChapter = -1, lastTrack = '', lastPaper = false, lastCue = '';
 function updateProgress(scroll: number): void {
+  if (heroPreview) {
+    const titleTop = wordmarkBounds.top - scroll;
+    document.dispatchEvent(new CustomEvent<HeroUiFrame>('midis:hero-ui-frame', { detail: {
+      titleTop,
+      titleBottom: titleTop + wordmarkBounds.height,
+      scrollOffset: scroll,
+      introComplete: document.body.classList.contains('intro-complete') || document.body.classList.contains('webgl-failed'),
+    } }));
+  }
   const cue = String(.85 * Math.max(0, 1 - scroll / (innerHeight * .2)));
   if (cue !== lastCue) { scrollCue.style.setProperty('--scroll-cue-opacity', cue); lastCue = cue; }
   const { start, end } = transitionRange();
@@ -70,7 +90,7 @@ chapters.forEach((link, index) => link.addEventListener('click', event => {
   lenis.scrollTo(index === 0 ? 0 : transitionRange().end, { immediate: reduced });
   history.replaceState(null, '', `${location.pathname}${link.hash}`);
 }));
-document.querySelector<HTMLAnchorElement>('.louver-brand')!.addEventListener('click', event => {
+document.querySelector<HTMLAnchorElement>('.louver-brand')?.addEventListener('click', event => {
   event.preventDefault();
   lenis.scrollTo(0, { immediate: reduced });
   history.replaceState(null, '', `${location.pathname}#hero`);
@@ -85,6 +105,14 @@ async function boot(): Promise<void> {
       // empty scroll runway between the words and the second screen.
       transition: transitionRange,
       wordmarkRect: () => ({ ...wordmarkBounds, top: wordmarkBounds.top - scrollY }),
+      presentation: heroPreview ? {
+        wordmarkGeometry: 'assets/midis/wordmark-alegreya.json',
+        wordmarkGold: { peak: 2.1, roughness: .30, envMapIntensity: .75, color: '#c7a364', paintedRelief: true },
+        backgroundScale: 1.12,
+        backgroundAnchorY: .10,
+        figureDropPx: 50,
+        headerBottomPx: 114,
+      } : undefined,
       frame: now => { lenis.raf(now); return scrollY; },
       onProgress: updateProgress,
     });

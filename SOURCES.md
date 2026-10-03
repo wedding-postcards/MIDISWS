@@ -1,5 +1,8 @@
 # Источники визуальных материалов
 
+Текущая утверждённая типографика: Alegreya + Roboto, OFL; источники и лицензии — `public/assets/fonts/midis/`.
+Платные шрифтовые образцы и другие кандидаты удалены; подключение — `src/brand-fonts.css`. Прежняя типографика героя пока не менялась.
+
 Все перечисленные файлы скопированы в `public/assets/` для стабильного локального запуска. SHA-256 сверены после копирования. Исходные пользовательские файлы и исследовательские оригиналы не изменялись.
 
 | Файл в проекте | Источник | Использование | SHA-256 |
@@ -11,7 +14,7 @@
 | `shopify/mud_normal.webp` | [Shopify texture](https://cdn.shopify.com/s/files/1/0951/3130/4218/files/mud_normal.webp?v=1762463320), локальный оригинал `../references/version-4/Ассеты_референса/Shopify_Finance/` | Живой тонкий край золотого фронта | `8780cb023bc028bde774e77b8e0f552cfb3e6ddbcf827de8c7a84c7b47912fea` |
 | `shopify/studio_small_09_1k.pmrem.ktx2` | [Shopify PMREM](https://cdn.shopify.com/s/files/1/0951/3130/4218/files/studio_small_09_1k.pmrem.ktx2?v=1765211412), локальный оригинал `../references/version-4/Ассеты_референса/Shopify_Finance/` | Световое окружение металлических объектов | `9bef1112f38222b67f77d6956e3369b6746e3a33ef5345d3fbba9250a8037d08` |
 
-Формула края в `src/scene.ts` адаптирована из точного локального извлечения `../references/sidekick-transition-audit/Overlay.original.frag` (2168 байт) из [Shopify Effects runtime](https://cdn.shopify.com/oxygen-v2/47215/49013/102837/4351350/assets/Effects-WhEp4HUr.js): сохранены поле `mudNormal`, движущийся шум и порог снизу вверх; цвет, сглаживание и порядок композитинга адаптированы под МИДИС. Для композиции и ритма использованы [живой раздел Sidekick](https://www.shopify.com/editions/winter2026#sidekick) и локальные скриншоты референса.
+Формула края в `src/scene.ts` адаптирована из точного локального извлечения `../references/sidekick-transition-audit/Overlay.original.frag` (2168 байт) из [Shopify Effects runtime](https://cdn.shopify.com/oxygen-v2/47215/49013/102837/4351350/assets/Effects-WhEp4HUr.js): сохранены поле `mudNormal`, движущийся шум и порог снизу вверх; цвет, сглаживание и порядок композитинга адаптированы под МИДИС. Для композиции и ритма использованы [живой раздел Sidekick](https://www.shopify.com/editions/winter2026#sidekick), сохранённый пользователем `C:\Users\Игорь\Desktop\МИДИС — сайт\Папка refernc Shopi\Shopify Editions _ Winter '26.html` и локальные скриншоты в `../references/user-art-direction/`.
 
 **Права:** публичная доступность Shopify-файлов не подтверждает право на их переиспользование. Этот этап — внутренний макет для ревью. Перед внешней публикацией, продажей или рекламой нужно получить разрешение либо заменить соответствующие ассеты своими.
 

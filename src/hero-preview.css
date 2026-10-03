@@ -1,0 +1,82 @@
+/* Preview-only presentation; the scene and its scroll timing remain shared. */
+body[data-hero-preview="game"] {
+  font-family: var(--font-interface);
+}
+body[data-hero-preview="game"] .hero-wordmark {
+  font: 550 22.05vw/.86 var(--font-display);
+  letter-spacing: 0;
+  color: #b79252;
+}
+body[data-hero-preview="game"].has-gold-wordmark .hero-wordmark {
+  color: transparent;
+}
+body[data-hero-preview="game"] .hero-caption {
+  left: var(--wordmark-first-center, 17vw);
+  width: max-content;
+  text-align: center;
+  transform: translateX(-50%);
+  top: calc(50% - 9.4815vw - 34px);
+  font: 500 clamp(12px, .85vw, 15px)/1.4 var(--font-interface);
+  font-stretch: 90%;
+  font-variation-settings: 'wght' 500, 'wdth' 90;
+  letter-spacing: .17em;
+  color: #d6bd8a;
+  text-shadow: none;
+}
+body[data-hero-preview="game"] .hero-story-title {
+  font-family: var(--font-display);
+  font-weight: 550;
+  color: #f0e2bf;
+}
+body[data-hero-preview="game"] .hero-story-title em {
+  color: #c8a767;
+}
+body[data-hero-preview="game"] .hero-story-title em span {
+  font: inherit;
+  letter-spacing: inherit;
+}
+body[data-hero-preview="game"] .hero-narrative {
+  font-family: var(--font-interface);
+  font-weight: 400;
+  font-stretch: 90%;
+  font-variation-settings: 'wght' 400, 'wdth' 90;
+  color: #ede3cc;
+}
+body[data-hero-preview="game"] .hero-narrative strong {
+  font-weight: 600;
+  font-variation-settings: 'wght' 600, 'wdth' 90;
+  color: #cbb180;
+}
+body[data-hero-preview="game"] .chapter-index :is(a, .chapter-placeholder) {
+  font-family: var(--font-display);
+  font-weight: 550;
+}
+.caption-desktop-break { display: none; }
+.hero-booking-action {
+  position: absolute; left: var(--wordmark-left, 10vw); bottom: 14svh;
+  pointer-events: auto;
+}
+.hero-booking-action .button-wrapper {
+  min-width: 300px; border: 0; padding: 0; background: none;
+}
+.hero-booking-action .button-inner { display: block; }
+.hero-booking-action :is(.button-label, .button-hover-label) {
+  font: 550 20px/1 var(--font-display); text-transform: none; color: #24190e;
+}
+.hero-booking-action .button-hover {
+  background-image: radial-gradient(ellipse at 45% 35%, #ead8aa, #c59a55);
+}
+.hero-booking-action .inverted.button-wrapper .button-hover::after { background: #f0dfb9; }
+.hero-booking-action .button-wrapper svg.decor-top { left: 50%; top: -5px; }
+.hero-booking-action .button-wrapper svg.decor-bottom { left: 50%; top: auto; bottom: -4px; }
+.hero-booking-action .button-wrapper svg.diamond-left { left: -6px; top: 50%; }
+.hero-booking-action .button-wrapper svg.diamond-right { left: auto; right: -6px; top: 50%; }
+.hero-booking-action .button-wrapper:focus-visible { outline: 1px solid #ead8aa; outline-offset: 5px; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-booking-action :is(.button-hover, .button-decors, .button-hover::after) { transition: none; }
+}
+/* Narrow desktop framing keeps both label lines off Perseus's wrist. */
+@media (max-width: 1200px) {
+  body[data-hero-preview="game"] .hero-caption { top: calc(50% - 9.4815vw - 50px); }
+  body[data-hero-preview="game"] .caption-desktop-break { display: initial; }
+}

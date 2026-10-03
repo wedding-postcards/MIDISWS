@@ -1,0 +1,56 @@
+.type-study {
+  --study-gold: #d6b078;
+  --study-ivory: #f1e5cf;
+  position: relative;
+  height: auto;
+  min-height: 100svh;
+  padding: 105px max(6vw, 36px) 38px;
+  color: var(--study-ivory);
+  background: radial-gradient(ellipse at 50% 0%, #292017 0%, #17140f 50%, #0e100f 100%);
+  pointer-events: auto;
+  font-family: var(--font-interface);
+  font-synthesis: none;
+}
+.type-study :is(h2, h3, h4, p) { margin: 0; }
+.type-study-intro { margin-bottom: 40px; }
+.type-study-kicker { color: var(--study-gold); font-size: 11px; font-weight: 600; letter-spacing: .15em; }
+.type-study-intro h2 { margin-top: 12px; font-size: 28px; line-height: 1.2; font-weight: 400; letter-spacing: -.02em; }
+.type-study-grid { max-width: 680px; }
+.type-specimen { min-width: 0; }
+.type-specimen :is(.type-specimen-content, .type-specimen-glyphs, .type-specimen-button) { font-stretch: var(--font-interface-width); }
+.type-specimen :is(.type-specimen-wordmark, .type-specimen-title, .type-specimen-glyphs p:first-child) { font-weight: 550; }
+.type-specimen-meta { display: flex; align-items: flex-start; gap: 12px; min-height: 57px; }
+.type-specimen-meta h3 { color: var(--study-ivory); font-size: 15px; line-height: 1.3; font-weight: 500; }
+.type-specimen-meta p { margin-top: 6px; color: #b6afa3; font-size: 12px; line-height: 1.5; }
+.type-specimen-content { font-family: var(--font-interface); }
+.type-specimen-wordmark {
+  padding-top: 22px;
+  color: var(--study-gold);
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 600;
+  font-optical-sizing: auto;
+  line-height: 1.1;
+  letter-spacing: .015em;
+}
+.type-specimen-nav { display: flex; gap: 25px; margin-top: 21px; color: #d1c3ab; font-size: 15px; font-weight: 600; line-height: 1.4; }
+.type-specimen-eyebrow { margin-top: 48px !important; color: var(--study-gold); font-size: 11px; font-weight: 600; line-height: 1.4; letter-spacing: .12em; }
+.type-specimen-title { margin-top: 12px !important; font-family: var(--font-display); font-size: 39px; font-weight: 550; font-optical-sizing: auto; line-height: 1.14; letter-spacing: -.015em; }
+/* Exact .--deco-line from BG3's Astarion block; see fonts/midis/SOURCES.md. */
+.type-specimen-divider { position: relative; left: 6px; width: 190px; height: 1px; margin: 22px 0; background: linear-gradient(90deg, #e0ccb1, #b78f6d) 50%; }
+.type-specimen-divider::before,
+.type-specimen-divider::after { content: ''; position: absolute; bottom: -3px; width: 8px; height: 7px; background-size: contain; background-repeat: no-repeat; }
+.type-specimen-divider::before { left: -5px; right: 100%; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' data-name='Layer 4 copy 2' viewBox='0 0 6 7'%3E%3Cpath d='M5.407 3 2.992.589l-2.9 2.905L2.33 5.729l.682.683 1.53-1.535-.96-.963-.571.573-.995-.993.978-.981L4.483 4H6V3z' style='fill:%23ddc9a7;stroke-width:0'/%3E%3C/svg%3E"); }
+.type-specimen-divider::after { left: 100%; background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' data-name='Layer 4 copy 2' viewBox='0 0 3 7'%3E%3Cpath d='M0 4h1l2-1H0z' style='fill:%23b78f6d;stroke-width:0'/%3E%3C/svg%3E"); }
+.type-specimen-copy { min-height: 83px; max-width: 340px; color: #c1b9ad; font-size: 17px; font-weight: 400; line-height: 1.6; }
+.type-specimen-button { display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; margin-top: 26px; padding: 13px 20px; min-height: 46px; border: 1px solid #b99057; background: #d6b078; color: #21190f; font-family: var(--font-interface); font-size: 15px; font-weight: 600; line-height: 1.2; cursor: pointer; transition: background .18s ease, border-color .18s ease; }
+.type-specimen-button:hover { background: #edcca0; border-color: #edcca0; }
+.type-specimen-button:active { background: #bd955e; }
+.type-specimen-button:focus-visible { outline: 2px solid var(--study-ivory); outline-offset: 5px; }
+.type-specimen-glyphs { margin-top: 37px; padding-top: 17px; border-top: 1px solid #d6b07826; color: #b7aa94; }
+.type-specimen-glyphs p:first-child { font-family: var(--font-display); font-weight: 550; font-size: 17px; line-height: 1.55; }
+.type-specimen-glyphs p:last-child { margin-top: 9px; font-family: var(--font-interface); font-size: 13px; letter-spacing: .1em; }
+.type-study-note { margin-top: 36px !important; color: #a39b8d; font-size: 12px; line-height: 1.5; }
+@media (prefers-reduced-motion: reduce) {
+  .type-specimen-button { transition: none; }
+}

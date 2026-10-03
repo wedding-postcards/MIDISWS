@@ -1,0 +1,52 @@
+/* First-screen material contract: ivory action, aged-gold controls, painted umber.
+ * Fixed controls retain their existing presentation once the paper scene appears. */
+body[data-hero-preview="game"] {
+  --hero-ui-gold: #c9ad79;
+  --hero-ui-ivory: #ead8aa;
+  --hero-ui-bronze: #937246;
+  --hero-ui-umber: #24190e;
+}
+body[data-hero-preview="game"] .hero-opening .hero-caption {
+  font-weight: 400;
+  font-stretch: 100%;
+  font-variation-settings: 'wght' 400, 'wdth' 100;
+  letter-spacing: .1em;
+  color: #d1bd98;
+}
+body[data-hero-preview="game"] .hero-opening .hero-booking-action .button-hover {
+  background-image: radial-gradient(ellipse at 45% 35%, var(--hero-ui-ivory), #c59a55);
+}
+body[data-hero-preview="game"] .hero-opening .hero-booking-action :is(.button-label, .button-hover-label) {
+  color: var(--hero-ui-umber);
+}
+body[data-hero-preview="game"]:not(.on-paper) :is(.bg3-header, .bg3-site-menu) .game-header-surface {
+  filter: saturate(.72) brightness(.88);
+  opacity: .94;
+}
+body[data-hero-preview="game"]:not(.on-paper) :is(.bg3-header, .bg3-site-menu) .ember-text {
+  background-image: linear-gradient(175deg, #8f6d43 0%, #bd955c 24%, #ead8aa 44%, #ddbd81 54%, #b18950 75%, #87613a 100%);
+  filter: url('#midis-hero-ember');
+  transition: filter 400ms ease;
+}
+body[data-hero-preview="game"]:not(.on-paper) :is(.bg3-header, .bg3-site-menu) :is(.bg3-item-link, .game-booking):is(:hover, :focus-visible) .ember-text {
+  filter: url('#midis-hero-ember') brightness(1.15) saturate(1.1);
+}
+body[data-hero-preview="game"]:not(.on-paper) :is(.bg3-menu-toggle, .bg3-menu-close) {
+  color: var(--hero-ui-gold);
+}
+body[data-hero-preview="game"]:not(.on-paper) :is(.bg3-menu-toggle, .bg3-menu-close):is(:hover, :focus-visible) {
+  color: var(--hero-ui-ivory);
+}
+body[data-hero-preview="game"]:not(.on-paper) .chapter-index { color: var(--hero-ui-gold); }
+body[data-hero-preview="game"]:not(.on-paper) .chapter-index a[aria-current] { color: var(--hero-ui-ivory); }
+body[data-hero-preview="game"] .hero-opening .scroll-cue.renaissance-scroll {
+  color: var(--hero-ui-ivory);
+  filter: none;
+}
+body[data-hero-preview="game"] .hero-opening .renaissance-scroll-frame {
+  fill: var(--hero-ui-umber);
+  fill-opacity: .84;
+  stroke: var(--hero-ui-gold);
+  stroke-width: 1.8;
+}
+body[data-hero-preview="game"] .hero-opening .renaissance-scroll-progress { stroke-width: 1.8; }

@@ -1,0 +1,35 @@
+/* Original 56px frame and 32px mouse from The Renaissance, recolored in MIDIS gold. */
+.scroll-cue.renaissance-scroll { width: 56px; height: 56px; color: #fff2c7; filter: drop-shadow(0 1px 3px #17110c); }
+.scroll-cue .renaissance-scroll-square { width: 56px; height: 56px; transform: rotate(-90deg); stroke-width: 2; stroke-linecap: butt; }
+.renaissance-scroll-square rect:first-child { opacity: .6; }
+body[data-hero-preview="game"] .renaissance-scroll-square rect:first-child {
+  fill: #241a10; fill-opacity: .76; opacity: 1; stroke: #d6bd8a;
+}
+.renaissance-scroll-mouse path[stroke] { stroke-width: 12; }
+.renaissance-scroll-progress { stroke-dasharray: 360; stroke-dashoffset: 360; transition: stroke-dashoffset .1s; }
+.scroll-cue .renaissance-scroll-mouse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  stroke: none;
+}
+.renaissance-mouse-dot { transform-origin: 0 0; }
+.chapter-index { top: 50%; color: #e4bd68; }
+.chapter-index a,
+.chapter-placeholder {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-height: 32px;
+  color: inherit;
+  font: 550 15px/1 var(--font-display);
+  opacity: .7;
+}
+.chapter-placeholder { opacity: .55; }
+.chapter-index a[aria-current] { color: #fff2c7; }
+.on-paper .chapter-index { color: #88602b; }
+.on-paper .chapter-index a[aria-current] { color: #6b4c22; }
+@media (prefers-reduced-motion: reduce) { .renaissance-scroll-progress { transition: none; } }

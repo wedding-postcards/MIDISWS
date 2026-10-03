@@ -1,6 +1,6 @@
-node_modules/
-dist/
-.npm-cache/
+/node_modules/
+/dist/
+/.npm-cache/
 /assets/
 /blender/
 /qa/

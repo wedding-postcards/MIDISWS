@@ -22,12 +22,35 @@ type Options={
   transition?:()=>{start:number;end:number};
   studyRect?:()=>Rect;
   wordmarkRect?:()=>Rect;
+  /** Optional preview tuning. Omitting it retains the original presentation. */
+  presentation?:{
+    wordmarkGeometry?:string;
+    wordmarkGold?:{peak:number;roughness:number;envMapIntensity:number;color:string;paintedRelief?:boolean};
+    backgroundScale?:number;
+    /** Screen-space Y of the baked sun, as a fraction of viewport height. */
+    backgroundAnchorY?:number;
+    figureDropPx?:number;
+    /** Screen scale at the cup; physical figure/coin dimensions remain intact. */
+    figureScale?:number;
+    figureScrollShrink?:number;
+    /** Cup screen anchor; its minimum clearance still follows headerBottomPx. */
+    figureAnchorY?:number;
+    headerBottomPx?:number;
+  };
 };
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp=THREE.MathUtils.clamp;
 const figurePoint=(x:number,y:number,z=0)=>new THREE.Vector3(-.04+(x/1030-.5)*(2.65*1030/1527),-.65+(.5-y/1527)*2.65,z);
 
 const CAMERA_PITCH=Math.atan2(.91,6.5);
+
+/** Monotone C2 framing holds through the wipe, without a visible return pulse. */
+export function sampleFigureFraming(scroll:number,start:number,initialScale=1,scrollShrink=0):number {
+  const progress=clamp(scroll/Math.max(start,1),0,1);
+  const initial=clamp(initialScale,.5,1);
+  return initial*(1-clamp(scrollShrink,0,.25)*THREE.MathUtils.smootherstep(progress,0,1));
+}
+
 export class SceneExperience {
   private renderer:THREE.WebGLRenderer;
   private composer:EffectComposer;
@@ -112,7 +135,7 @@ export class SceneExperience {
     const [painting,bg,mud,relief,bowl,finance,env,wordmarkGeometry]=await Promise.all([
       textures.loadAsync(assetUrl('assets/art/perseus-grip-clean-2026-10-02.png')),textures.loadAsync(assetUrl('assets/art/background.png')),textures.loadAsync(assetUrl('assets/shopify/mud_normal.webp')),
       fetch(assetUrl('assets/midis/perseus-relief-depth.json')).then(r=>r.json()),loader.loadAsync(assetUrl('assets/midis/bowl-v8.glb')),loader.loadAsync(assetUrl('assets/shopify/finance.glb')),ktx.loadAsync(assetUrl('assets/shopify/studio_small_09_1k.pmrem.ktx2')),
-      this.options.wordmarkRect?new THREE.BufferGeometryLoader().loadAsync(assetUrl('assets/midis/wordmark-gold.json')):Promise.resolve(undefined),
+      this.options.wordmarkRect?new THREE.BufferGeometryLoader().loadAsync(assetUrl(this.options.presentation?.wordmarkGeometry??'assets/midis/wordmark-gold.json')):Promise.resolve(undefined),
     ]);
     env.mapping=THREE.CubeUVReflectionMapping;this.artwork.environment=env;this.front.environment=env;
     this.artwork.environmentRotation.set(.85,-1.3,0);this.front.environmentRotation.set(.85,-1.3,0);
@@ -122,7 +145,30 @@ export class SceneExperience {
     this.backdrop=bg;this.artwork.background=bg;
     if(wordmarkGeometry){
       const metal=new THREE.MeshStandardMaterial();
-      antiqueGold(metal,'body',2.3);metal.roughness=.26;metal.envMapIntensity=1;
+      const finish=this.options.presentation?.wordmarkGold;
+      antiqueGold(metal,'body',finish?.peak??2.3);metal.roughness=finish?.roughness??.26;metal.envMapIntensity=finish?.envMapIntensity??1;
+      if(finish)metal.color.set(finish.color);
+      if(finish?.paintedRelief){
+        // Local inscription finish only: broad light from the painted sun and
+        // darker downward-facing bevels. No scene lights or vessel finishes change.
+        wordmarkGeometry.computeBoundingBox();
+        const bounds=wordmarkGeometry.boundingBox!,size=bounds.getSize(new THREE.Vector3());
+        const compileGold=metal.onBeforeCompile,cacheGold=metal.customProgramCacheKey();
+        metal.onBeforeCompile=(shader,renderer)=>{
+          compileGold.call(metal,shader,renderer);
+          shader.uniforms.uInscriptionBounds={value:new THREE.Vector4(bounds.min.x,bounds.min.y,size.x,size.y)};
+          shader.fragmentShader='uniform vec4 uInscriptionBounds;\n'+shader.fragmentShader;
+          shader.fragmentShader=shader.fragmentShader.replace('float goldPeak=max',`
+            vec2 inscription=(vAlloyPosition.xy-uInscriptionBounds.xy)/uInscriptionBounds.zw;
+            float sunDistance=(inscription.x-.43)/.35;
+            float paintedSun=exp(-sunDistance*sunDistance)*smoothstep(.08,1.,inscription.y);
+            float inscriptionBevel=smoothstep(.015,.35,1.-abs(normal.z));
+            float bevelLight=mix(.48,1.2,smoothstep(-.4,.4,normal.y));
+            outgoingLight*=mix(.82,1.14,paintedSun)*mix(1.,bevelLight,inscriptionBevel);
+            float goldPeak=max`);
+        };
+        metal.customProgramCacheKey=()=>`${cacheGold}-painted-inscription-v1`;
+      }
       this.wordmark=new THREE.Mesh(wordmarkGeometry,metal);
       this.wordmark.name='МИДИС — золотая надпись за Персеем';
       this.artwork.add(this.wordmark);
@@ -359,6 +405,55 @@ export class SceneExperience {
     const pointerX=covered||reduced?0:this.smoothPointer.x*pointerScale,pointerY=covered||reduced?0:this.smoothPointer.y*pointerScale;
     const cameraPan=0,cameraLift=-cameraDistance*Math.tan(THREE.MathUtils.degToRad(10.5))*pullback*.75;
     this.camera.position.set(cameraCenterX+cameraPan+pointerX*.23,.88+cameraLift+pointerY*.105,cameraDistance+retreat);this.camera.lookAt(cameraCenterX+cameraPan+pointerX*.03,cameraTargetY+cameraLift,editorial?retreat:0);this.camera.updateMatrixWorld();
+    // The sky does not zoom with Perseus. Use the whole 2048×1152 source
+    // wherever the viewport permits, with a few pixels of independent drift.
+    if(this.backdrop){
+      const presentation=this.options.presentation;
+      const overscan=Math.max(1,presentation?.backgroundScale??1.025);
+      const cropX=Math.min(1,viewAspect/(16/9))/overscan,cropY=Math.min(1,(16/9)/viewAspect)/overscan;
+      this.backdrop.repeat.set(cropX,cropY);
+      // The bright sun is baked near (955.46,180.63) in the 2048×1152 artwork.
+      // Keep the sampled rectangle inside the source, avoiding ClampToEdge bands.
+      const anchorY=presentation?.backgroundAnchorY;
+      const offsetY=anchorY===undefined?(1-cropY)*.5:1-180.63/1152-(1-anchorY)*cropY;
+      const offsetX=(1-cropX)*.5+pointerX*.003+dolly*.004;
+      const driftY=offsetY+pointerY*.002+dolly*.003;
+      this.backdrop.offset.set(presentation?clamp(offsetX,0,1-cropX):offsetX,presentation?clamp(driftY,0,1-cropY):driftY);
+    }
+    const pose=sampleHeroSway(reduced?0:editorial?cameraProgress*1.5:scrollVh,this.quaternion);
+    this.composition.quaternion.copy(this.compositionRest).multiply(this.quaternion);
+    this.composition.position.y=.09+pose*.021;
+    const presentation=this.options.presentation;
+    if(presentation?.figureDropPx){
+      // Translate the intact figure/cup assembly; physics remains in cup space.
+      this.bowl!.getWorldPosition(this.temp);this.camera.getWorldDirection(this.temp2);
+      const depth=Math.max(.1,this.temp.sub(this.camera.position).dot(this.temp2));
+      const pixel=2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))*depth/innerHeight;
+      this.composition.position.y-=presentation.figureDropPx*(1-THREE.MathUtils.smoothstep(cameraProgress,0,1))*pixel;
+      this.placeBowl();this.composition.updateWorldMatrix(true,true);
+      if(presentation.headerBottomPx!==undefined&&!covered){
+        this.bowl!.getWorldPosition(this.temp).project(this.camera);
+        const missing=presentation.headerBottomPx+24-(.5-this.temp.y*.5)*innerHeight;
+        if(missing>0)this.composition.position.y-=missing*pixel;
+      }
+    }
+    this.placeBowl();this.composition.updateWorldMatrix(true,true);
+    if(presentation?.figureScale!==undefined&&!covered){
+      // Move the view along its cup ray, preserving the cup's screen anchor.
+      // Scaling the assembly would invalidate CoinFlow's cached world sizes.
+      const scale=sampleFigureFraming(reduced?0:scroll,start,presentation.figureScale,presentation.figureScrollShrink);
+      this.bowl!.getWorldPosition(this.temp);this.temp2.copy(this.camera.position).sub(this.temp);
+      this.camera.position.addScaledVector(this.temp2,1/scale-1);this.camera.updateMatrixWorld();
+      if(presentation.figureAnchorY!==undefined){
+        this.bowl!.getWorldPosition(this.temp);
+        const depth=-this.temp2.copy(this.temp).applyMatrix4(this.camera.matrixWorldInverse).z;
+        const pixel=2*Math.tan(THREE.MathUtils.degToRad(this.camera.fov/2))*depth/innerHeight;
+        const targetY=Math.max((presentation.headerBottomPx??0)+24,innerHeight*presentation.figureAnchorY);
+        const cupY=(.5-this.temp.project(this.camera).y*.5)*innerHeight;
+        this.temp2.setFromMatrixColumn(this.camera.matrixWorld,1);
+        this.camera.position.addScaledVector(this.temp2,(targetY-cupY)*pixel);this.camera.updateMatrixWorld();
+      }
+    }
     if(this.wordmark&&this.options.wordmarkRect){
       const rect=this.options.wordmarkRect();
       this.wordmark.visible=!covered&&rect.top+rect.height>0&&rect.top<innerHeight;
@@ -373,16 +468,6 @@ export class SceneExperience {
         this.wordmark.scale.setScalar(rect.width*pixel);
       }
     }
-    // The sky does not zoom with Perseus. Use the whole 2048×1152 source
-    // wherever the viewport permits, with a few pixels of independent drift.
-    if(this.backdrop){
-      const cropX=Math.min(1,viewAspect/(16/9))/1.025,cropY=Math.min(1,(16/9)/viewAspect)/1.025;
-      this.backdrop.repeat.set(cropX,cropY);
-      this.backdrop.offset.set((1-cropX)*.5+pointerX*.003+dolly*.004,(1-cropY)*.5+pointerY*.002+dolly*.003);
-    }
-    const pose=sampleHeroSway(reduced?0:editorial?cameraProgress*1.5:scrollVh,this.quaternion);
-    this.composition.quaternion.copy(this.compositionRest).multiply(this.quaternion);
-    this.composition.position.y=.09+pose*.021;this.placeBowl();this.composition.updateWorldMatrix(true,true);
     // Restore hero/cup depth before the foreground coin pass, so coins
     // spilling off the far rim cannot be painted over the near wall or arm.
     this.artwork.visible=!covered;
