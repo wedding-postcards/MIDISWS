@@ -5,7 +5,7 @@ export default defineConfig({
   base: './',
   build: {
     rollupOptions: {
-      input: { main: 'index.html', headerPreview: 'header-preview.html' },
+      input: { main: 'index.html' },
     },
   },
 });

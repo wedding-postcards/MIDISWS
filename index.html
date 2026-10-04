@@ -1,109 +1,39 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#17110c" />
-  <link rel="icon" href="data:," />
-  <title>МИДИС — компьютерный клуб</title>
-  <style>html{background:#17110c}body{margin:0}#intro-cover{position:fixed;inset:0;width:100%;height:100%;z-index:40;pointer-events:none;background:#170f09}</style>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="theme-color" content="#211a10" />
+<meta name="description" content="МИДИС — компьютерный клуб в Саратове. Мощные ПК, PlayStation 5 и твоя команда. Забронируй игровое место в LANGAME." />
+<title>МИДИС — компьютерный клуб в Саратове</title>
 </head>
-<body data-hero-preview="game">
-  <div class="scene-viewport"><canvas id="scene" role="img" aria-label="Персей с золотой чашей и монетами"></canvas></div>
-  <canvas id="intro-cover" aria-hidden="true"></canvas>
-  <svg class="game-material-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs>
-    <filter id="midis-inner-ember" x="-8%" y="-35%" width="116%" height="170%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="erode" radius=".45" result="core" />
-      <feGaussianBlur in="core" stdDeviation=".3" result="soft-core" />
-      <feFlood flood-color="#fff1ae" flood-opacity=".64" result="heat" />
-      <feComposite in="heat" in2="soft-core" operator="in" result="hot-core" />
-      <feComposite in="SourceAlpha" in2="core" operator="out" result="rim" />
-      <feFlood flood-color="#de6e16" flood-opacity=".6" result="copper" />
-      <feComposite in="copper" in2="rim" operator="in" result="warm-rim" />
-      <feFlood flood-color="#ff660b" flood-opacity=".22" result="fire" />
-      <feComposite in="fire" in2="SourceAlpha" operator="in" result="fire-shape" />
-      <feGaussianBlur in="fire-shape" stdDeviation=".85" result="warm-spill" />
-      <feMerge><feMergeNode in="warm-spill" /><feMergeNode in="SourceGraphic" /><feMergeNode in="warm-rim" /><feMergeNode in="hot-core" /></feMerge>
-    </filter>
-    <filter id="midis-hero-ember" x="-8%" y="-35%" width="116%" height="170%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="erode" radius=".45" result="core" />
-      <feGaussianBlur in="core" stdDeviation=".3" result="soft-core" />
-      <feFlood flood-color="#f1d8a3" flood-opacity=".32" result="heat" />
-      <feComposite in="heat" in2="soft-core" operator="in" result="hot-core" />
-      <feComposite in="SourceAlpha" in2="core" operator="out" result="rim" />
-      <feFlood flood-color="#a4773c" flood-opacity=".42" result="copper" />
-      <feComposite in="copper" in2="rim" operator="in" result="warm-rim" />
-      <feFlood flood-color="#c5914b" flood-opacity=".08" result="fire" />
-      <feComposite in="fire" in2="SourceAlpha" operator="in" result="fire-shape" />
-      <feGaussianBlur in="fire-shape" stdDeviation=".6" result="warm-spill" />
-      <feMerge><feMergeNode in="warm-spill" /><feMergeNode in="SourceGraphic" /><feMergeNode in="warm-rim" /><feMergeNode in="hot-core" /></feMerge>
-    </filter>
-  </defs></svg>
-  <nav class="bg3-header" aria-label="Навигация МИДИС" data-intro-ui inert>
-    <div class="game-header-surface" aria-hidden="true"></div>
-    <div class="bg3-header-content">
-      <ul class="bg3-primary" aria-label="Основные разделы"><li class="bg3-item"><button type="button" class="bg3-item-link"><span class="ember-text">Клуб</span></button><span class="bg3-item-decor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 34 10" height="10" width="34"><path fill="#ddc9a7" d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span></li>
-<li class="bg3-item"><button type="button" class="bg3-item-link"><span class="ember-text">Залы и цены</span></button><span class="bg3-item-decor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 34 10" height="10" width="34"><path fill="#ddc9a7" d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span></li>
-<li class="bg3-brand"><span class="ember-text">МИДИС</span></li>
-<li class="bg3-item"><button type="button" class="bg3-item-link"><span class="ember-text">Турниры</span></button><span class="bg3-item-decor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 34 10" height="10" width="34"><path fill="#ddc9a7" d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span></li>
-<li class="bg3-item game-booking-item"><button class="game-booking" type="button"><span class="ember-text">Забронировать</span></button></li></ul>
-      <button class="bg3-menu-toggle" type="button" aria-label="Открыть меню" aria-haspopup="dialog" aria-controls="bg3-site-menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><circle cx="2.25" cy="21.75" r="2.25" fill="white"></circle><circle cx="12" cy="21.75" r="2.25" fill="white"></circle><circle cx="21.75" cy="21.75" r="2.25" fill="white"></circle><circle cx="2.25" cy="2.25" r="2.25" fill="white"></circle><circle cx="12" cy="2.25" r="2.25" fill="white"></circle><circle cx="21.75" cy="2.25" r="2.25" fill="white"></circle><circle cx="2.25" cy="12" r="2.25" fill="white"></circle><circle cx="12" cy="12" r="2.25" fill="white"></circle><circle cx="21.75" cy="12" r="2.25" fill="white"></circle></svg></button>
+<body class="relic-ui">
+<canvas id="intro-cover" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:120;background:#170f09"></canvas>
+<header class="midis-header" data-intro-ui inert>
+  <a class="midis-brand" href="#hero" aria-label="МИДИС — в начало"><span class="brand-emblem" aria-hidden="true"></span><span class="brand-lockup"><span class="brand-name">МИДИС</span><small>КОМПЬЮТЕРНЫЙ КЛУБ · САРАТОВ</small></span></a>
+  <nav class="midis-nav" aria-label="Главная навигация"><a href="#zones">Зоны и цены</a><a href="#visit">Как добраться</a><a class="relic-action header-book" href="https://langame.ru/app" target="_blank" rel="noopener noreferrer">Забронировать ПК</a><button class="global-menu-trigger" aria-label="Открыть меню клуба" aria-controls="club-menu" aria-expanded="false"><span></span><span></span><span></span></button></nav>
+</header>
+<main class="midis-page">
+<section class="tableau" id="hero" aria-label="МИДИС — больше, чем игра" data-ready="false">
+  <div class="tableau-stage">
+    <h1 class="hero-word">МИДИС</h1>
+    <div class="tableau-canvas"><canvas id="scene" role="img" aria-label="Персей с золотой чашей и интерактивными монетами"></canvas></div>
+    <div class="story-area" data-intro-ui inert>
+      <p class="hero-motto">Больше, чем игра.</p>
+      <p class="hero-intro">Твой вечер. Твоя команда. Твоя история.</p>
+      <a href="https://langame.ru/app" target="_blank" rel="noopener noreferrer" class="relic-action relic-action-primary hero-book">Забронировать ПК</a>
+      <button class="scroll-invitation" aria-label="Погрузись в игру — продолжить знакомство"><span>Погрузись в игру</span><span class="scroll-thread" aria-hidden="true"></span></button>
     </div>
-  </nav>
-  <dialog class="bg3-site-menu" id="bg3-site-menu" aria-label="Меню МИДИС">
-    <div class="game-header-surface" aria-hidden="true"></div>
-    <div class="bg3-header-content">
-      <ul class="bg3-primary" aria-label="Основные разделы"><li class="bg3-item"><button type="button" class="bg3-item-link"><span class="ember-text">Клуб</span></button><span class="bg3-item-decor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 34 10" height="10" width="34"><path fill="#ddc9a7" d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span></li>
-<li class="bg3-item"><button type="button" class="bg3-item-link"><span class="ember-text">Залы и цены</span></button><span class="bg3-item-decor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 34 10" height="10" width="34"><path fill="#ddc9a7" d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span></li>
-<li class="bg3-brand"><span class="ember-text">МИДИС</span></li>
-<li class="bg3-item"><button type="button" class="bg3-item-link"><span class="ember-text">Турниры</span></button><span class="bg3-item-decor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 34 10" height="10" width="34"><path fill="#ddc9a7" d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span></li>
-<li class="bg3-item game-booking-item"><button class="game-booking" type="button"><span class="ember-text">Забронировать</span></button></li></ul>
-      <button class="bg3-menu-close" type="button" aria-label="Закрыть меню"><svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><g clip-path="url(#clip0_1207_126425)"><path d="M30.3996 1.59961L1.59961 30.3996M30.3996 30.3996L1.59961 1.59961" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></g><defs><clipPath id="clip0_1207_126425"><rect width="32" height="32" fill="white"></rect></clipPath></defs></svg></button>
+    <div class="scroll-story" aria-hidden="true" inert>
+      <p><span class="story-line">Погрузись</span><span class="story-completion"><span class="story-line story-line-second">в игру</span><span class="story-caption">на лучших ПК Саратова</span></span></p>
     </div>
-    <div class="game-menu-interior" aria-hidden="true"><i></i><i></i></div>
-  </dialog>
-<nav class="chapter-index" aria-label="Разделы сайта" data-intro-ui inert>
-    <a href="#hero" aria-label="Первый экран" aria-current="location"><span>I</span></a>
-    <span class="chapter-track" aria-hidden="true"><i></i></span>
-    <a href="#second-screen" aria-label="Второй экран"><span>II</span></a>
-    <span class="chapter-placeholder" aria-hidden="true">III</span>
-    <span class="chapter-placeholder" aria-hidden="true">IV</span>
-    <span class="chapter-placeholder" aria-hidden="true">V</span>
-    <span class="chapter-placeholder" aria-hidden="true">VI</span>
-    <span class="chapter-placeholder" aria-hidden="true">VII</span>
-    <span class="chapter-placeholder" aria-hidden="true">VIII</span>
-    <span class="chapter-placeholder" aria-hidden="true">IX</span>
-    <span class="chapter-placeholder" aria-hidden="true">X</span>
-  </nav>
-  <main aria-label="Художественная сцена" data-intro-ui inert>
-    <section class="hero" id="hero" aria-labelledby="hero-title">
-      <div class="hero-opening">
-        <h1 class="hero-wordmark" id="hero-title">МИДИС</h1>
-        <p class="hero-caption">КОМПЬЮТЕРНЫЙ<br class="caption-desktop-break"> КЛУБ<span class="caption-separator"> · </span><span class="caption-city">САРАТОВ</span></p>
-      <div class="hero-booking-action"><button type="button" aria-label="Забронировать ПК" class="button-wrapper inverted button-buy"><span class="button-hover-wrapper" aria-hidden="true"><span class="button-hover"><span class="button-hover-label"><!--[--><span>Забронировать ПК</span><!--]--></span></span></span><span class="button-inner" aria-hidden="true"><span class="button-decors"><svg class="diamond-left" xmlns="http://www.w3.org/2000/svg" width="18" height="8" viewBox="0 0 18 8"><g fill="none"><polygon fill="#C5A589" points="3.841 0 18 4 3.841 8 0 4"></polygon><polygon fill="#FFEFE1" points="3.946 0 4.696 4 0 4"></polygon></g></svg><svg class="diamond-right" xmlns="http://www.w3.org/2000/svg" width="18" height="8" viewBox="0 0 18 8"><g fill="none" transform="matrix(-1 0 0 1 18 0)"><polygon fill="#C5A589" points="3.841 0 18 4 3.841 8 0 4"></polygon><polygon fill="#FFEFE1" points="3.946 0 4.696 4 0 4"></polygon></g></svg><svg class="decor decor-top" xmlns="http://www.w3.org/2000/svg" width="34" height="10" viewBox="0 0 34 10"><path d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg><svg class="decor decor-bottom" xmlns="http://www.w3.org/2000/svg" width="34" height="10" viewBox="0 0 34 10"><path d="M17.337 9.99h-.414l-.222-.146-3.186-3.187C13.092 6.234 12.598 6 12 6H0V5h12c.861 0 1.613.341 2.222.95l2.87 2.87 2.335-2.334.707.707-2.797 2.797ZM34 6H23c-.861 0-1.516-.36-2.124-.97l-2.87-2.87-2.335 2.335-.707-.707L17.76.99h.414l.221.147 3.187 3.186c.423.423.82.677 1.417.677h11v1Z"></path></svg></span><span class="button"><span class="button-borders"><span class="border-left"></span><span class="border-right"></span><img src="/assets/bg3-header/btn/diamond-corner-bottom-left.svg" class="border-corner border-bottom-left"><img src="/assets/bg3-header/btn/diamond-corner-bottom-right.svg" class="border-corner border-bottom-right"><img src="/assets/bg3-header/btn/diamond-corner-top-left.svg" class="border-corner border-top-left"><img src="/assets/bg3-header/btn/diamond-corner-top-right.svg" class="border-corner border-top-right"></span><span class="button-label"><!--[--><span>Забронировать ПК</span><!--]--></span></span></span></button></div>
-        <span class="scroll-cue renaissance-scroll" aria-hidden="true">
-          <svg class="renaissance-scroll-square" viewBox="0 0 100 100" fill="none">
-            <path class="renaissance-scroll-frame" d="M13 5H87L95 13V87L87 95H13L5 87V13Z" />
-            <path class="renaissance-scroll-progress" d="M13 5H87L95 13V87L87 95H13L5 87V13Z" pathLength="360" stroke-width="2" />
-          </svg>
-          <svg class="renaissance-scroll-mouse" viewBox="0 0 500 500" fill="none">
-            <g transform="translate(250.376 250.0315) rotate(-.21991482227497272) scale(.8281108336045857 1)">
-              <path d=" M139.47024536132812,-64.79547119140625 C139.47024536132812,-64.79547119140625 139.47024536132812,64.79547119140625 139.47024536132812,64.79547119140625 C139.47024536132812,141.76907348632812 76.97364807128906,204.2656707763672 0.00004536132837529294,204.2656707763672 C0.00004536132837529294,204.2656707763672 -0.00004536132837529294,204.2656707763672 -0.00004536132837529294,204.2656707763672 C-76.97364807128906,204.2656707763672 -139.47024536132812,141.76907348632812 -139.47024536132812,64.79547119140625 C-139.47024536132812,64.79547119140625 -139.47024536132812,-64.79547119140625 -139.47024536132812,-64.79547119140625 C-139.47024536132812,-141.76907348632812 -76.97364807128906,-204.2656707763672 -0.00004536132837529294,-204.2656707763672 C-0.00004536132837529294,-204.2656707763672 0.00004536132837529294,-204.2656707763672 0.00004536132837529294,-204.2656707763672 C76.97364807128906,-204.2656707763672 139.47024536132812,-141.76907348632812 139.47024536132812,-64.79547119140625z" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
-            </g>
-            <g class="renaissance-mouse-dot" transform="translate(250 146.0833)">
-              <g transform="rotate(.9874260828809212)"><path d=" M0,-20.024145126342773 C11.051325798034668,-20.024145126342773 20.024145126342773,-11.051325798034668 20.024145126342773,0 C20.024145126342773,11.051325798034668 11.051325798034668,20.024145126342773 0,20.024145126342773 C-11.051325798034668,20.024145126342773 -20.024145126342773,11.051325798034668 -20.024145126342773,0 C-20.024145126342773,-11.051325798034668 -11.051325798034668,-20.024145126342773 0,-20.024145126342773z" fill="currentColor" /></g>
-            </g>
-          </svg>
-        </span>
-      </div>
-      <div class="hero-story">
-        <h2 class="hero-story-title" aria-label="Взойди на Олимп">Взойди на <em><span>О</span>лимп</em></h2>
-        <p class="hero-narrative"><strong>Займи своё место среди лучших.</strong> Побеждай в любимых играх на самом топовом железе в&nbsp;Саратове. Поднимайся в рейтинге клуба, забирай награды из&nbsp;чаши&nbsp;Персея. текстовый текст</p>
-        <div class="hero-media-placeholder" role="img" aria-label="Место для видео клуба"></div>
-      </div>
-    </section>
-    <section class="second-screen" id="second-screen" aria-label="Второй экран" data-scene-ui></section>
+    <div class="closing-story" aria-hidden="true" inert>
+      <span class="paint-divider" aria-hidden="true"></span>
+      <p class="closing-title">Взойди<br><em>на Олимп.</em></p>
+      <p class="closing-copy">Твои победы достойны большего.<br>Поднимайся в рейтинге клуба и забирай награды.</p>
+      <a class="relic-action relic-action-primary" href="https://langame.ru/app" target="_blank" rel="noopener noreferrer">Забронировать ПК</a>
+    </div>
+  </div>
+</section>
+    <section class="second-screen" id="second-screen" aria-label="Второй экран" data-scene-ui><span class="section-anchor" id="zones" aria-hidden="true"></span><span class="section-anchor section-anchor-bottom" id="visit" aria-hidden="true"></span></section>
     <section class="type-study" id="type-reference" aria-labelledby="type-study-title" data-scene-ui>
       <div class="type-study-intro">
         <p class="type-study-kicker">МИДИС / УТВЕРЖДЁННАЯ ТИПОГРАФИКА</p>
@@ -131,7 +61,9 @@
       <p class="type-study-note">Шрифтовая проба: название, текст и кнопки показывают начертания; это не утверждённые тексты или логотип.</p>
     </section>
   </main>
-  <div class="film-grain" aria-hidden="true"></div>
-  <script type="module" src="/src/header-preview.ts"></script>
-</body>
-</html>
+  <nav class="chapter-rail" aria-label="Разделы сайта" data-ui data-intro-ui inert></nav>
+  <!-- Empty menu shell: content will be designed in a later stage. -->
+  <div class="menu-scrim" data-ui hidden></div>
+  <aside class="club-menu" data-ui id="club-menu" aria-label="Меню клуба" aria-hidden="true" inert hidden></aside>
+  <div class="midis-grain" aria-hidden="true"></div><script type="module" src="/src/hero-desktop.ts"></script>
+</body></html>

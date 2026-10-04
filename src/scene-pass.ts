@@ -21,8 +21,9 @@ export class ScenePass extends Pass {
   private revealProgress = 0;
   private introCover?: IntroCover;
   readonly noise = makeShopifyNoiseTexture();
-  constructor(private artwork:THREE.Scene,private front:THREE.Scene,private viewCamera:THREE.PerspectiveCamera,mud:THREE.Texture) {
+  constructor(private artwork:THREE.Scene,private front:THREE.Scene,private viewCamera:THREE.PerspectiveCamera,mud:THREE.Texture,artworkSamples=4) {
     super('Shopify CrossFade + Overlay + foreground');
+    this.artworkTarget.samples=artworkSamples;
     const black = new THREE.DataTexture(new Uint8Array([23,15,9,255]),1,1,THREE.RGBAFormat);
     black.colorSpace=THREE.SRGBColorSpace; black.needsUpdate=true;
     this.overlay.uniforms={tInput:{value:this.artworkTarget.texture},tMudNormal:{value:mud},tNoise:{value:this.noise},uPosition:{value:-1},uTime:{value:0},uColor:{value:new THREE.Vector3(.86,.81,.69)},uResolution:{value:new THREE.Vector2(1,1)}};

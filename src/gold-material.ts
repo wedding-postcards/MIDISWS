@@ -48,3 +48,21 @@ export function antiqueGold(material:MeshStandardMaterial,finish:'body'|'edge'|'
   };
   material.customProgramCacheKey=()=>`midis-antique-gold-v9-warm-studio-${finish}-${peak??'default'}`;
 }
+
+/** The small foot sits against the painted wrist. Its polished lower rim
+ * must not bloom into a detached bright ellipse. Keep the upper bowl intact. */
+export function softenBowlFoot(material:MeshStandardMaterial):void {
+  const compile=material.onBeforeCompile,cacheKey=material.customProgramCacheKey();
+  material.onBeforeCompile=(shader,renderer)=>{
+    compile.call(material,shader,renderer);
+    shader.fragmentShader=shader.fragmentShader.replace('#include <metalnessmap_fragment>',`
+      float footFinish=1.-smoothstep(-.59,-.535,vAlloyPosition.y);
+      roughnessFactor=mix(roughnessFactor,.43,footFinish);
+      #include <metalnessmap_fragment>`);
+    shader.fragmentShader=shader.fragmentShader.replace('float goldPeak=max',`
+      float footHighlight=max(outgoingLight.r,max(outgoingLight.g,outgoingLight.b));
+      outgoingLight*=mix(1.,.48/(.48+footHighlight),footFinish);
+      float goldPeak=max`);
+  };
+  material.customProgramCacheKey=()=>`${cacheKey}-quiet-foot-v1`;
+}
