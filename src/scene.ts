@@ -32,7 +32,7 @@ type Options={
     /** Transparent, stationary artwork for a DOM-composed hero. */
     tableau?:TableauPresentation;
     wordmarkGeometry?:string;
-    wordmarkGold?:{peak:number;roughness:number;envMapIntensity:number;color:string;paintedRelief?:boolean};
+    wordmarkGold?:{peak:number;roughness:number;envMapIntensity:number;color:string;paintedRelief?:boolean;backlit?:boolean};
     backgroundScale?:number;
     /** Screen-space Y of the baked sun, as a fraction of viewport height. */
     backgroundAnchorY?:number;
@@ -169,6 +169,18 @@ export class SceneExperience {
       const finish=this.options.presentation?.wordmarkGold;
       antiqueGold(metal,'body',finish?.peak??2.3);metal.roughness=finish?.roughness??.26;metal.envMapIntensity=finish?.envMapIntensity??1;
       if(finish)metal.color.set(finish.color);
+      if(finish?.backlit){
+        const compileGold=metal.onBeforeCompile,cacheGold=metal.customProgramCacheKey();
+        metal.onBeforeCompile=(shader,renderer)=>{
+          compileGold.call(metal,shader,renderer);
+          shader.fragmentShader=shader.fragmentShader.replace('float goldPeak=max',`
+            float backlitEdge=smoothstep(.07,.58,1.-abs(normal.z));
+            outgoingLight*=mix(.9,1.,backlitEdge);
+            outgoingLight+=vec3(.24,.15,.065)*backlitEdge;
+            float goldPeak=max`);
+        };
+        metal.customProgramCacheKey=()=>`${cacheGold}-backlit-edge-v1`;
+      }
       if(finish?.paintedRelief){
         // Local inscription finish only: broad light from the painted sun and
         // darker downward-facing bevels. No scene lights or vessel finishes change.
@@ -210,6 +222,23 @@ export class SceneExperience {
       if(wordmarkMaterial!==metal)metal.dispose();
       this.wordmark=new THREE.Mesh(wordmarkGeometry,wordmarkMaterial);
       this.wordmark.name=wordmarkMaterial===metal?'МИДИС — золотая надпись за Персеем':'МИДИС — плоская надпись за Персеем';
+      if(fullPainting&&finish){
+        // The painted sun sits behind the inscription. A restrained halo
+        // reveals its silhouette while the gold face stays in softer light.
+        const halo=new THREE.Mesh(new THREE.PlaneGeometry(1.22,.34),new THREE.ShaderMaterial({
+          transparent:true,depthWrite:false,depthTest:true,blending:THREE.AdditiveBlending,
+          vertexShader:'varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+          fragmentShader:`varying vec2 vUv;
+            void main(){
+              vec2 p=(vUv-vec2(.46,.77))*vec2(2.2,3.0);
+              float glow=exp(-dot(p,p)*7.0);
+              gl_FragColor=vec4(vec3(.75,.43,.16),glow*.16);
+            }`,
+        }));
+        halo.position.set(-.035,.012,-.04);
+        halo.renderOrder=-1;
+        this.wordmark.add(halo);
+      }
       this.artwork.add(this.wordmark);
       document.body.classList.add('has-gold-wordmark');
     }

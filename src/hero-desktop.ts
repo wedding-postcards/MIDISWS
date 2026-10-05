@@ -174,7 +174,7 @@ async function boot():Promise<void>{
   const scene=new SceneExperience(document.querySelector<HTMLCanvasElement>('#scene')!,{
    trial10:true,editorial:true,
    transition:()=>({start:innerHeight*START_WIPE,end:innerHeight*END_WIPE}),
-   presentation:{tableau:{fullPainting:true,framing:()=>framing,scrollProgress:()=>heroScroll,wipeProgress:()=>wipe,wordmarkFlatColor:'#d8b36a',paintedWordmark:true,motionStrength:reduced?0:.85,active:()=>scrollY<hero.offsetHeight},wordmarkGeometry:'assets/midis/wordmark-alegreya.json',backgroundScale:1.16,backgroundAnchorY:.125},
+   presentation:{tableau:{fullPainting:true,framing:()=>framing,scrollProgress:()=>heroScroll,wipeProgress:()=>wipe,wordmarkFlatColor:'#d8b36a',paintedWordmark:false,motionStrength:reduced?0:.85,active:()=>scrollY<hero.offsetHeight},wordmarkGeometry:'assets/midis/wordmark-alegreya.json',wordmarkGold:{peak:1.75,roughness:.4,envMapIntensity:.45,color:'#bc955c',backlit:true},backgroundScale:1.16,backgroundAnchorY:.125},
    wordmarkRect:()=>wordBounds,
    frame:time=>{lenis.raf(time);update(scrollY);return scrollY;},onProgress:()=>{},
   });
